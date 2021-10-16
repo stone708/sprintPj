@@ -1,0 +1,26 @@
+logging:
+  level:
+    org.springframework.cloud.gateway: trace
+    reactor.netty.http.client: trace
+    
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: request_header_route
+        uri: http://localhost:9001/
+        predicates:
+        - Path=/version/**
+        filters:
+        - AddRequestHeader=My-Header-Good,Good
+        - AddRequestHeader=My-Header-Remove,Remove
+        - AddRequestParameter=var, good
+        - AddRequestParameter=var2, remove
+        - name: Logging
+          args:
+            baseMessage: My Custom Message
+            preLogger: true
+            postLogger: true
+
+
+ 
